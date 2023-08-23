@@ -4,6 +4,9 @@ FROM eclipse-temurin:17-jre-alpine
 RUN mkdir -p /app
 WORKDIR /app
 
+# Install OpenCV
+RUN apk add --no-cache opencv
+
 ADD build/libs/*-SNAPSHOT.jar app.jar
 
 ENTRYPOINT java -jar app.jar
