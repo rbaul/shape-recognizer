@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install OpenCV
 RUN apk add --no-cache opencv \
-    && apk add --no-cache libstdc++ gcompat
+    && apk add --no-cache libstdc++ gcc g++ make gcompat
 
 ADD build/libs/*-SNAPSHOT.jar app.jar
 
