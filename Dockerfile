@@ -1,9 +1,5 @@
 FROM eclipse-temurin:17-jdk-alpine
 
-# create folder in the container - can be useful to mount host filesystem into the container
-RUN mkdir -p /app
-WORKDIR /app
-
 # Install OpenCV
 RUN apk update && \
     apk add --no-cache \
@@ -34,6 +30,10 @@ RUN mkdir /opencv/build && \
 RUN rm -rf /opencv && \
     apk del build-base cmake linux-headers git && \
     rm -rf /var/cache/apk/*
+
+# create folder in the container - can be useful to mount host filesystem into the container
+RUN mkdir -p /app
+WORKDIR /app
 
 ADD build/libs/*-SNAPSHOT.jar app.jar
 
