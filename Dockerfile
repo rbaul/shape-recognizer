@@ -51,7 +51,7 @@ RUN mkdir /opencv/opencv-${OPENCV_VERSION}/build && \
 
 # Clean up
 RUN rm -rf /opencv && \
-	pip uninstall numpy && \
+	pip uninstall -y numpy && \
 	apk del wget python3 py3-pip python3-dev apache-ant && \
 	apk del build-base cmake linux-headers && \
     rm -rf /var/cache/apk/*
