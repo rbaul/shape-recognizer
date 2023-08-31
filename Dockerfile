@@ -76,3 +76,5 @@ RUN mkdir -p /app
 WORKDIR /app
 
 ADD build/libs/*-SNAPSHOT.jar app.jar
+
+ENTRYPOINT java -jar app.jar
