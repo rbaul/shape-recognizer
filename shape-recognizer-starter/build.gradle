@@ -25,8 +25,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 
 	// OpenCV
-	implementation 'org.openpnp:opencv:4.7.0-0'
-//	implementation 'org.openpnp:opencv:3.4.2-0'
+//	implementation 'org.openpnp:opencv:4.7.0-0'
+	implementation 'org.openpnp:opencv:3.4.2-2'
 
 	compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
