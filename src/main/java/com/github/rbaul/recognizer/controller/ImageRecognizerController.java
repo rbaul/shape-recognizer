@@ -3,6 +3,7 @@ package com.github.rbaul.recognizer.controller;
 import com.github.rbaul.recognizer.dtos.ImageDataDto;
 import com.github.rbaul.recognizer.service.ImageRecognizerService;
 import com.github.rbaul.recognizer.shape.models.Shape;
+import com.github.rbaul.recognizer.shape.models.Text;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -38,5 +39,25 @@ public class ImageRecognizerController {
                 .contentType(MediaType.IMAGE_PNG)
                 .contentLength(recognizeShapeImage.length)
                 .body(body);
+    }
+
+    @PostMapping(path = "/shape/template", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public ResponseEntity<Resource> getRecognizeShapeImageByTemplate(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image, @RequestPart("template") List<MultipartFile> templates) {
+        byte[] recognizeShapeImage = imageRecognizerService.getRecognizeShapeImageByTemplate(data, image, templates);
+        ByteArrayResource body = new ByteArrayResource(recognizeShapeImage);
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .contentLength(recognizeShapeImage.length)
+                .body(body);
+    }
+
+    @PostMapping(path = "/shape/text-location", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public List<Text> getRecognizeImageTextLocation(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image) {
+        return imageRecognizerService.getRecognizeImageTextLocation(data, image);
+    }
+
+    @PostMapping(path = "/shape/text", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public String getRecognizeImageText(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image) {
+        return imageRecognizerService.getRecognizeImageText(data, image);
     }
 }

@@ -10,15 +10,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 public class RectangleShape extends Shape {
-    private Point point;
+    private int x;
+    private int y;
     private int height;
     private int width;
-    private Point p2;
-    private Point p3;
-    private Point p4;
 
     @Override
     public ShapeType getType() {
         return ShapeType.RECTANGLE;
+    }
+
+    @Override
+    public double getArea() {
+        return height * width;
+    }
+
+    public Point getCenter() {
+        return new Point(x + (double) width / 2, y + (double) height / 2);
     }
 }

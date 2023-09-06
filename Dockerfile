@@ -4,6 +4,7 @@ FROM rbaul/alpine-opencv-java:main
 RUN mkdir -p /app
 WORKDIR /app
 
+COPY tessdata tessdata
 ADD build/libs/*-SNAPSHOT.jar app.jar
 
 ENTRYPOINT java -jar app.jar

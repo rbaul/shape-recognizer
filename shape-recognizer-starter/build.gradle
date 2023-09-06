@@ -29,6 +29,10 @@ dependencies {
 //	implementation 'org.openpnp:opencv:4.6.0-0'
 	implementation 'org.openpnp:opencv:3.4.2-2'
 
+	// Tesseract OCR - Tess4J
+	// https://github.com/tesseract-ocr/tessdata/tree/main
+	implementation 'net.sourceforge.tess4j:tess4j:5.8.0'
+
 	compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 

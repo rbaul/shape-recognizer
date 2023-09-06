@@ -8,6 +8,7 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,4 +28,15 @@ import java.util.List;
 public abstract class Shape {
     private ShapeType type;
     private List<Shape> nested;
+    private String text;
+
+    public void addNested(Shape shape) {
+        if (nested == null) {
+            nested = new ArrayList<>();
+        }
+        nested.add(shape);
+    }
+    public double getArea() {
+        return 0;
+    }
 }
