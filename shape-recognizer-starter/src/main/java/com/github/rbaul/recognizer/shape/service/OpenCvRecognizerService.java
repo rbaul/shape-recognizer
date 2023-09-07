@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OpenCvRecognizerService implements RecognizerService {
 
+    public static final String PNG_EXTENSION = ".png";
     @Autowired
     private TesseractTextRecognizerService textRecognizerService;
 
@@ -114,16 +115,20 @@ public class OpenCvRecognizerService implements RecognizerService {
         return shapes;
     }
 
-    public byte[] getRecognizeShapeImage(byte[] imageBytes) {
+    public byte[] getRecognizeShapeImage(byte[] imageBytes, boolean onImageDraw) {
         List<Shape> shapes = recognizeAllShapes(imageBytes);
+
+        Mat drawMap;
+
         // Load the image
         Mat imageOriginal = Imgcodecs.imdecode(new MatOfByte(imageBytes), Imgcodecs.IMREAD_COLOR);
-        Mat emptyMat = new Mat(imageOriginal.size(), CvType.CV_8UC3, new Scalar(0, 0, 0)); // Black background
 
-        drawOn(emptyMat, shapes);
+        drawMap = onImageDraw ? imageOriginal : new Mat(imageOriginal.size(), CvType.CV_8UC3, new Scalar(0, 0, 0)); // Black background;
+
+        drawOn(drawMap, shapes);
 
         MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".png", emptyMat, matOfByte);
+        Imgcodecs.imencode(PNG_EXTENSION, drawMap, matOfByte);
         return matOfByte.toArray();
     }
 
@@ -142,12 +147,12 @@ public class OpenCvRecognizerService implements RecognizerService {
         }
     }
 
-    public byte[] getRecognizeShapeImageByTemplate(byte[] imageBytes, List<byte[]> templateBytes) {
+    public byte[] getRecognizeShapeImageByTemplate(byte[] imageBytes, List<byte[]> templateBytes, boolean onImageDraw) {
         OpenCV.loadLocally(); // SEVERE: OpenCV.loadShared() is not supported in Java >= 12. Falling back to OpenCV.loadLocally().
 
         // Load the image
         Mat mainImage = Imgcodecs.imdecode(new MatOfByte(imageBytes), Imgcodecs.IMREAD_COLOR);
-        Mat output = mainImage.clone();
+        Mat output = onImageDraw ? mainImage.clone() : new Mat(mainImage.size(), CvType.CV_8UC3, new Scalar(0, 0, 0)); // Black background;
 
         // Load the template images
         List<Mat> templates = templateBytes.stream().map(tb -> Imgcodecs.imdecode(new MatOfByte(tb), Imgcodecs.IMREAD_COLOR))
@@ -177,7 +182,7 @@ public class OpenCvRecognizerService implements RecognizerService {
         }
 
         MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".png", output, matOfByte);
+        Imgcodecs.imencode(PNG_EXTENSION, output, matOfByte);
         return matOfByte.toArray();
     }
 }

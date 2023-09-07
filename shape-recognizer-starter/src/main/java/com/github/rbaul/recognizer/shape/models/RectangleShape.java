@@ -19,13 +19,4 @@ public class RectangleShape extends Shape {
     public ShapeType getType() {
         return ShapeType.RECTANGLE;
     }
-
-    @Override
-    public double getArea() {
-        return height * width;
-    }
-
-    public Point getCenter() {
-        return new Point(x + (double) width / 2, y + (double) height / 2);
-    }
 }

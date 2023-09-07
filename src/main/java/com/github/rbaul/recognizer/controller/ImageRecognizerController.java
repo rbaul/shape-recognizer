@@ -10,10 +10,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -32,8 +29,10 @@ public class ImageRecognizerController {
     }
 
     @PostMapping(path = "/shape/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
-    public ResponseEntity<Resource> getRecognizeShapeImage(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image) {
-        byte[] recognizeShapeImage = imageRecognizerService.getRecognizeShapeImage(data, image);
+    public ResponseEntity<Resource> getRecognizeShapeImage(@RequestPart("data") ImageDataDto data,
+                                                           @RequestPart("image") MultipartFile image,
+                                                           @RequestParam(name = "onImageDraw", defaultValue = "true") boolean onImageDraw) {
+        byte[] recognizeShapeImage = imageRecognizerService.getRecognizeShapeImage(data, image, onImageDraw);
         ByteArrayResource body = new ByteArrayResource(recognizeShapeImage);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
@@ -42,8 +41,11 @@ public class ImageRecognizerController {
     }
 
     @PostMapping(path = "/shape/template", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
-    public ResponseEntity<Resource> getRecognizeShapeImageByTemplate(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image, @RequestPart("template") List<MultipartFile> templates) {
-        byte[] recognizeShapeImage = imageRecognizerService.getRecognizeShapeImageByTemplate(data, image, templates);
+    public ResponseEntity<Resource> getRecognizeShapeImageByTemplate(@RequestPart("data") ImageDataDto data,
+                                                                     @RequestPart("image") MultipartFile image,
+                                                                     @RequestPart("template") List<MultipartFile> templates,
+                                                                     @RequestParam(name = "onImageDraw", defaultValue = "true") boolean onImageDraw) {
+        byte[] recognizeShapeImage = imageRecognizerService.getRecognizeShapeImageByTemplate(data, image, templates, onImageDraw);
         ByteArrayResource body = new ByteArrayResource(recognizeShapeImage);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
@@ -51,12 +53,12 @@ public class ImageRecognizerController {
                 .body(body);
     }
 
-    @PostMapping(path = "/shape/text-location", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @PostMapping(path = "/text/location", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
     public List<Text> getRecognizeImageTextLocation(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image) {
         return imageRecognizerService.getRecognizeImageTextLocation(data, image);
     }
 
-    @PostMapping(path = "/shape/text", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @PostMapping(path = "/text", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
     public String getRecognizeImageText(@RequestPart("data") ImageDataDto data, @RequestPart("image") MultipartFile image) {
         return imageRecognizerService.getRecognizeImageText(data, image);
     }

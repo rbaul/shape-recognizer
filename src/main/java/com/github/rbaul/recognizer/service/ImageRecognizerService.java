@@ -33,15 +33,15 @@ public class ImageRecognizerService {
         }
     }
 
-    public byte[] getRecognizeShapeImage(ImageDataDto data, MultipartFile image) {
+    public byte[] getRecognizeShapeImage(ImageDataDto data, MultipartFile image, boolean onImageDraw) {
         try {
-            return openCvRecognizerService.getRecognizeShapeImage(image.getBytes());
+            return openCvRecognizerService.getRecognizeShapeImage(image.getBytes(), onImageDraw);
         } catch (IOException e) {
             throw new RecognizerException("Failed read image", e);
         }
     }
 
-    public byte[] getRecognizeShapeImageByTemplate(ImageDataDto data, MultipartFile image, List<MultipartFile> templates) {
+    public byte[] getRecognizeShapeImageByTemplate(ImageDataDto data, MultipartFile image, List<MultipartFile> templates, boolean onImageDraw) {
         try {
             return openCvRecognizerService.getRecognizeShapeImageByTemplate(image.getBytes(), templates.stream().map(multipartFile -> {
                 try {
@@ -50,7 +50,7 @@ public class ImageRecognizerService {
                     log.error("Failed read template image", e);
                     return null;
                 }
-            }).filter(Objects::nonNull).collect(Collectors.toList()));
+            }).filter(Objects::nonNull).collect(Collectors.toList()), onImageDraw);
         } catch (IOException e) {
             throw new RecognizerException("Failed read image", e);
         }

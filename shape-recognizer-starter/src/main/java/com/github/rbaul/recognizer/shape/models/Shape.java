@@ -36,7 +36,4 @@ public abstract class Shape {
         }
         nested.add(shape);
     }
-    public double getArea() {
-        return 0;
-    }
 }
